@@ -78,8 +78,34 @@ negative:
     call print_uint
 int_ret:
     ret
+
 string_equals:
-    xor rax, rax
+    push r12          ; second string pointer
+    call string_length
+    mov r8, rax       ; r8 = length of the first string
+    mov r10, rdi      ; r10 = first string pointer
+    mov r12, rsi      ; r12 = second string pointer
+    mov rdi, rsi      ; call string_length on the second string
+    call string_length
+    mov r9, rax       ; r9 = length of the second string
+    cmp r8, r9
+    jne str_eq_false  ; strings aren't equal if their length's aren't equal
+    xor rcx, rcx      ; loop iterator
+srt_eq_loop:
+    mov r11b, byte [r10+rcx] ; r11 = first string's character
+    mov r8b, byte [r12+rcx]  ; r8 = second string's character
+    cmp r8b, r11b
+    jne str_eq_false   ; terminate if characters aren't equal
+    inc rcx
+    cmp rcx, r9
+    jne srt_eq_loop    ; loop until we've reached the end of the strings
+str_eq_true:
+    mov rax, 1         ; 1 = strings are equal
+    pop r12
+    ret
+str_eq_false:
+    mov rax, 0         ; 0 = strings aren't equal
+    pop r12
     ret
 
 
