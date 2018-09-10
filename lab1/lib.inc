@@ -38,21 +38,21 @@ print_newline:
     xor rax, rax
     ret
 
-    print_uint:
+print_uint:
     push r12
     push r13
     mov r12, rsp
     mov rax, rdi
     mov r13, 10     ; radix, dont forget to restore r13
-    dec rsp         ; динамическая генерация буфера
+    dec rsp         ; dynamic bufer generation
     mov byte [rsp], 0
 uint_loop:
     xor rdx, rdx    ; clear rdx, because div uses rdx:rax
     div r13
     add rdx, 0x30   ; because of ascii
-    dec rsp         ; динамическая генерация буфера
+    dec rsp         ; dynamic bufer generation
     mov [rsp], dl
-    cmp rax, 0         ; когда частное = 0, пора пока-пока из цикла
+    cmp rax, 0         ; when chastnoe is 0, then it`s time to bye-bye from loop
     je uint_ret
     jmp uint_loop
 uint_ret:
@@ -65,8 +65,19 @@ uint_ret:
 
 print_int:
     xor rax, rax
+    test rdi, rdi
+    js negative
+    call print_uint
+    jmp int_ret
+negative:
+    push rdi
+    mov rdi, '-'
+    call print_char
+    pop rdi
+    neg rdi
+    call print_uint
+int_ret:
     ret
-
 string_equals:
     xor rax, rax
     ret
