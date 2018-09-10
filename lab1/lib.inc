@@ -91,16 +91,53 @@ read_char:
     dec rsp
     mov rsi, rsp
     syscall
+    test rax, rax     ; rax = number of characters read, if rax = 0, it's the end of input
+    je print_char_ret
     xor rax, rax
     mov al, [rsp]
+print_char_ret:
     inc rsp
     ret
 
 read_word:
+    push r13
+    push r14
+    xor r14, r14
+    mov r10, rsi
+    mov r13, rdi
+first_loop:
+    call read_char
+    cmp al, 0x20
+    jne write_char
+    jmp first_loop
+cont_read:
+    call read_char
+    cmp r14, r10
+    je read_out
+    cmp al, 0x20 ; space
+    je read_ret
+write_char:
+    cmp al, 0x9 ; tab
+    je read_ret
+    cmp al, 0x0 ; end of input
+    je read_ret
+    mov byte [r13+r14], al
+    inc r14
+    jmp cont_read
+read_ret:
+    mov rax, r13
+    mov byte [r13+r14], 0
+    mov rdx, r14 ; string length
+    pop r14
+    pop r13
+    ret
+read_out:
+    mov rax, 0
+    xor rdx, rdx ; string length = 0
+    pop r14
+    pop r13
     ret
 
-; rdi points to a string
-; returns rax: number, rdx : length
 parse_uint:
     xor rax, rax
     ret
