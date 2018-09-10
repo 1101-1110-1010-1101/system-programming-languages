@@ -85,7 +85,16 @@ string_equals:
 
 read_char:
     xor rax, rax
-    ret 
+    mov rax, 0
+    mov rdi, 0
+    mov rdx, 1
+    dec rsp
+    mov rsi, rsp
+    syscall
+    xor rax, rax
+    mov al, [rsp]
+    inc rsp
+    ret
 
 read_word:
     ret
