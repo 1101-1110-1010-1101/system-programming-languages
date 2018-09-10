@@ -138,14 +138,46 @@ read_out:
     pop r13
     ret
 
+; rdi -- null-terminated input string pointer
+; out rax -- parsed uint
+; out rdx -- number of characters parsed
 parse_uint:
     xor rax, rax
+    xor rsi, rsi
+    mov r8, 10
+    xor rcx, rcx
+    xor rdx, rdx
+parse_uint_loop:
+    mov sil, [rdi+rcx]
+    cmp sil, 0x30
+    jl parse_uint_exit
+    cmp sil, 0x39
+    jg parse_uint_exit
+    inc rcx
+    sub sil, 0x30
+    mul r8
+    add rax, rsi
+    jmp parse_uint_loop
+parse_uint_exit:
+    mov rdx, rcx
     ret
 
 ; rdi points to a string
 ; returns rax: number, rdx : length
 parse_int:
     xor rax, rax
+    cmp byte [rdi], 0x2d
+    je parse_int_negative
+    call parse_uint
+    ret
+parse_int_negative:
+    inc rdi
+    call parse_uint
+    cmp rdx, 0      ; if we haven't read any digits, we shouldn't count the '-'
+    je parse_int_ret
+    neg rax
+    inc rdx
+parse_int_ret:
     ret 
 
 
