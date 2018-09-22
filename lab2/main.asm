@@ -5,6 +5,9 @@ msg_noword: db "No such word",0
 section .text
 %include "colon.inc"
 
+%define d_err 2
+%define d_out 1
+
 extern find_word
 extern read_word
 extern string_length
@@ -29,6 +32,7 @@ _start:
 	add r10, rax
 	mov rdi, r10
 	inc rdi
+	mov r15, d_out
 	call print_string
 .exit:
 	call print_newline
@@ -39,6 +43,7 @@ _start:
 	mov rdi, msg_noword
 	call string_length
 	mov rsi, rax
+	mov r15, d_err
 	call print_string
 	jmp .exit
 

@@ -30,7 +30,7 @@ print_string:
     mov rsi, rdi
     mov rdx, rax
     mov rax, 1
-    mov rdi, 1
+    mov rdi, r15
     syscall
     pop rdx
     ret
@@ -39,7 +39,7 @@ print_string:
 print_char:
     mov rax, 1
     push rdi
-    mov rdi, 1
+    mov rdi, r15
     mov rsi, rsp
     mov rdx, 1
     syscall
