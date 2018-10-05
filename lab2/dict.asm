@@ -1,8 +1,6 @@
 global find_word
 extern string_equals
 
-%include 'colon.inc'
-
 section .text
 ; rdi = address of a null terminated word name
 ; rsi = address of the last word
@@ -16,7 +14,7 @@ find_word:
 	mov r13, rsi
 	test r13, r13
 	jz .didntfound
-	add rsi, 8
+	add rsi, 16
 	mov rdi, r12
 	call string_equals
 	mov rsi, r13

@@ -2,9 +2,10 @@ global _start
 section .data
 msg_noword: db "No such word",0
 
-section .text
+section .data
 %include "colon.inc"
 
+section .text
 %define d_err 2
 %define d_out 1
 
@@ -15,6 +16,15 @@ extern print_string
 extern print_newline
 
 _start:
+	mov rsi, lw
+.link_loop:
+	mov r12, rsi  ; текущий элемент
+	mov rsi, [rsi] ; адрес предыдущего
+	test rsi, rsi
+	jz .ent
+	mov [rsi + 8], r12
+	jmp .link_loop
+.ent:
 	mov rsi, 255
 	sub rsp, 256
 	mov rdi, rsp
@@ -26,7 +36,7 @@ _start:
 	call find_word
 	test rax, rax
 	jz .bad
-	add rax, 8
+	add rax, 16
 	mov r10, rax
 	call string_length
 	add r10, rax
@@ -46,5 +56,11 @@ _start:
 	mov r15, d_err
 	call print_string
 	jmp .exit
+
+.list_linker:
+	; rsi - last word
+
+
+
 
 

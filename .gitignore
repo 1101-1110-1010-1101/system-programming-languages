@@ -8,3 +8,6 @@
 !lab2/dict.asm
 !lab2/lib.asm
 !lab2/main.asm
+!lab3
+!lab3/*.c
+!lab3/*.h
