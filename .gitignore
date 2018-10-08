@@ -11,3 +11,5 @@
 !lab3
 !lab3/*.c
 !lab3/*.h
+!lab3/report/
+!lab3/report/*.tex

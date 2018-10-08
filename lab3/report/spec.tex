@@ -1,0 +1,62 @@
+\documentclass[12pt, a4paper]{article}
+\usepackage[a4paper, includeheadfoot, mag=1000, left=2cm, right=1.5cm, top=1.5cm, bottom=1.5cm, headsep=0.8cm, footskip=0.8cm]{geometry}
+% Fonts
+\usepackage{fontspec, unicode-math}
+\setmainfont[Ligatures=TeX]{CMU Serif}
+\setmonofont{CMU Typewriter Text}
+\usepackage[english, russian]{babel}
+% Indent first paragraph
+\usepackage{indentfirst}
+\setlength{\parskip}{5pt}
+% Page headings
+\usepackage{fancyhdr}
+% Diagrams
+\usepackage{graphicx}
+% Code listing
+\usepackage{listings}
+\pagestyle{fancy}
+\renewcommand{\headrulewidth}{0pt}
+\setlength{\headheight}{16pt}
+\newfontfamily\namefont[Scale=1.2]{Gloria Hallelujah}
+\fancyhead{}
+% Use case template
+
+\begin{document}
+
+% Title page
+\include{spectitlepage}
+
+\section*{Assignment}
+\subsection*{Scalar product}
+The solution should consist of:
+\begin{itemize}
+    \item Two global arrays of the same size.
+    \item The function to compute the scalar product of two given arrays.
+    \item A main function that calls the product computations and outputs it's results.
+\end{itemize}
+
+\subsection*{Prime Number Checker}
+You have to write a function to test the number for primarity. The interesting thing is that the number will be 
+of the type unsigned long and that it will be read from stdin.
+\begin{itemize}
+    \item You have to write a function int is\_prime(unsigned long n), which checks whether n is a prime number or not. If it is the case, the function will return 1; otherwise 0.
+    \item The main function will read an unsigned long number and call is\_prime function on it. Then, depending on its result, it will output either yes or no.
+    \item Use scanf function with the format specifier \%lu
+\end{itemize}
+
+\section*{Code listing}
+\subsection*{scalar.c}
+\lstinputlisting[language=c]{../scalar.c}
+
+\subsection*{main\_scalar.c}
+\lstinputlisting[language=c]{../main_scalar.c}
+
+\subsection*{is\_prime.c}
+\lstinputlisting[language=c]{../is_prime.c}
+
+\subsection*{main\_prime\_test.c}
+\lstinputlisting[language=c]{../main_prime_test.c}
+
+\section*{Conclusion}
+While compliting the assignment I met the basics of C language and wrote scalar product function and prime number checking function.
+\end{document}
