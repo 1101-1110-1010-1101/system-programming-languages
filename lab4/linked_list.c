@@ -154,6 +154,20 @@ void print_with_space(int el) {
   printf("%d ", el);
 }
 
+element* map(element* list, int (*fun) (int)) {
+  element* new_list = NULL;
+  while (list->prev != NULL) 
+    list = list->prev;
+  while (list != NULL) {
+    list_add_back(fun(list->value), &new_list);
+    list = list->next;
+  }
+  return new_list;
+}
+
+int square(int a) {return a*a;}
+int cube(int a) {return a*a*a;}
+
 int main(int argc, char *argv[]) {
   // Checking flags section
   int flags = 0, opt = 0;
@@ -200,7 +214,10 @@ int main(int argc, char *argv[]) {
   foreach(list, *print_with_newline);
   printf("\nLets print our list elements with foreach (spaces)\n");
   foreach(list, *print_with_space);
-  printf("\n");
+  printf("\n\nLets square every element using map\n");
+  foreach(map(list, *square), *print_with_space);
+  printf("\n\nLets cube every element using map\n");
+  foreach(map(list, *cube), *print_with_space);
   printf("Clear list...\n");
   list_free(&list);
   print_list(list);
