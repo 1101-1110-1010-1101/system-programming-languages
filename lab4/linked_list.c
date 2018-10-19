@@ -183,6 +183,17 @@ int sum(int a, int b) {return a + b;}
 int min(int a, int b) {return a >= b? b: a;}
 int max(int a, int b) {return a >= b? a: b;}
 
+void map_mut(element* list, int (*fun) (int)) {
+  while (list->prev != NULL) 
+    list = list->prev;
+  while (list != NULL) {
+    list->value = fun(list->value);
+    list = list->next;
+  }
+}
+
+int abs(int a) {return a < 0? -a: a;}
+
 int main(int argc, char *argv[]) {
   // Checking flags section
   int flags = 0, opt = 0;
@@ -237,7 +248,10 @@ int main(int argc, char *argv[]) {
   printf("sum = %d\n", foldl(list, 0, *sum));
   printf("\nLets find min and max element using foldl\n");
   printf("min = %d", foldl(list, INT_MAX, *min));
-  printf("\nmax = %d\n", foldl(list, INT_MIN, *max));
+  printf("\nmax = %d", foldl(list, INT_MIN, *max));
+  printf("\n\nLets abs every element using map_mut\n");
+  map_mut(list, *abs);
+  foreach(list, *print_with_space);
   printf("\nClear list...\n");
   list_free(&list);
   print_list(list);
