@@ -115,6 +115,45 @@ void load_from_file(element** list, char* file) {
   }
 }
 
+element* list_node_at(int index, element* list) {
+  int i = 0;
+  if (list == NULL) {
+    printf("Soory, I'm running out of elements\n");
+    return NULL;
+  }
+  while (list->prev != NULL) 
+    list = list->prev;
+  while (list != NULL) {
+    if (i == index)
+      return list;
+    list = list->next;
+    i++;
+  }
+  return NULL;
+}
+
+int list_get(int index, element* list) {
+  element* result = list_node_at(index, list);
+  return result == NULL ? 0 : result->value;
+}
+
+void foreach(element* list, void (*fun) (int)) {
+  while (list->prev != NULL) 
+    list = list->prev;
+  while (list != NULL) {
+    fun(list->value);
+    list = list->next;
+  }
+}
+
+void print_with_newline(int el) {
+  printf("%d\n", el);
+}
+
+void print_with_space(int el) {
+  printf("%d ", el);
+}
+
 int main(int argc, char *argv[]) {
   // Checking flags section
   int flags = 0, opt = 0;
@@ -146,10 +185,22 @@ int main(int argc, char *argv[]) {
   print_list(list);
   printf("\n");
   // Testing features section
+  printf("list_add_back 19\n");
   list_add_back(19, &list);
-  list_add_front(29, &list);
-  printf("list_length = %d\n", list_length(list));
   print_list(list);
+  printf("\nlist_add_front 29\n");
+  list_add_front(29, &list);
+  print_list(list);
+  printf("\nlist_length = %d\n", list_length(list));
+  printf("\nlist_get\n");
+  printf("list[0] = %d\n", list_get(0, list));
+  printf("list[4] = %d\n", list_get(4, list));
+  printf("\nTesting High-Order Functions\n");
+  printf("\nLets print our list elements with foreach (newlines)\n");
+  foreach(list, *print_with_newline);
+  printf("\nLets print our list elements with foreach (spaces)\n");
+  foreach(list, *print_with_space);
+  printf("\n");
   printf("Clear list...\n");
   list_free(&list);
   print_list(list);
