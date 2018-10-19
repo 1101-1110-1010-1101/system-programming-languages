@@ -66,10 +66,13 @@ void list_free(element** list) {
 void print_list(element* list) {
   if (list == NULL) {
     printf("Soory, I'm running out of elements\n");
+    return;
   }
+  while (list->prev != NULL) 
+    list = list->prev;
   while (list != NULL) {
     printf("%d ", list->value);
-    list = list->prev;
+    list = list->next;
   }
   printf("\n");
 }
@@ -113,6 +116,7 @@ void load_from_file(element** list, char* file) {
 }
 
 int main(int argc, char *argv[]) {
+  // Checking flags section
   int flags = 0, opt = 0;
   char* file = NULL;
   while ((opt = getopt(argc, argv, "f:")) != -1) {
@@ -126,7 +130,7 @@ int main(int argc, char *argv[]) {
         exit(EXIT_FAILURE);
     }
   }
-
+  // List init section
   element* list = NULL;
   if (flags & FLAG_FILE) {
     load_from_file(&list, file);
@@ -134,12 +138,14 @@ int main(int argc, char *argv[]) {
   }
   else
     from_stdin(&list);
+  // Display list summary section
   printf("\nList info:\n");
   printf("list_length = %d\n", list_length(list));
   printf("list_sum = %d\n", list_sum(list));
   printf("contents: ");
   print_list(list);
   printf("\n");
+  // Testing features section
   list_add_back(19, &list);
   list_add_front(29, &list);
   printf("list_length = %d\n", list_length(list));
@@ -147,5 +153,6 @@ int main(int argc, char *argv[]) {
   printf("Clear list...\n");
   list_free(&list);
   print_list(list);
+
   return 0;
 }
