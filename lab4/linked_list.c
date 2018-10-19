@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <getopt.h>
+#include <limits.h>
 #define FLAG_FILE 1
 
 typedef struct element {
@@ -168,6 +169,20 @@ element* map(element* list, int (*fun) (int)) {
 int square(int a) {return a*a;}
 int cube(int a) {return a*a*a;}
 
+int foldl(element* list, int acc, int (*fun)(int a, int b)) {
+  while (list->prev != NULL) 
+    list = list->prev;
+  while (list != NULL) {
+    acc = fun(acc, list->value);
+    list = list->next;
+  }
+  return acc;
+}
+
+int sum(int a, int b) {return a + b;}
+int min(int a, int b) {return a >= b? b: a;}
+int max(int a, int b) {return a >= b? a: b;}
+
 int main(int argc, char *argv[]) {
   // Checking flags section
   int flags = 0, opt = 0;
@@ -218,7 +233,12 @@ int main(int argc, char *argv[]) {
   foreach(map(list, *square), *print_with_space);
   printf("\n\nLets cube every element using map\n");
   foreach(map(list, *cube), *print_with_space);
-  printf("Clear list...\n");
+  printf("\n\nLets get the sum of list using foldl\n");
+  printf("sum = %d\n", foldl(list, 0, *sum));
+  printf("\nLets find min and max element using foldl\n");
+  printf("min = %d", foldl(list, INT_MAX, *min));
+  printf("\nmax = %d\n", foldl(list, INT_MIN, *max));
+  printf("\nClear list...\n");
   list_free(&list);
   print_list(list);
 
