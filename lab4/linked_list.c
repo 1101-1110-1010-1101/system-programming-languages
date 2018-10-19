@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <getopt.h>
 #include <limits.h>
+#include <stdbool.h>
 #define FLAG_FILE 1
 
 typedef struct element {
@@ -105,15 +106,17 @@ void from_stdin(element** list) {
     list_add_back(j, list);
 }
 
-void load_from_file(element** list, char* file) {
+bool load(element** list, char* file) {
   FILE *f = fopen(file, "r");
   int e = 0;
   if (f == NULL) {
-    fprintf(stderr, "File not found!\n");
+    return false;
   }
   while (fscanf(f, "%d", &e) != EOF) {
     list_add_back(e, list);
   }
+  fclose(f);
+  return true;
 }
 
 element* list_node_at(int index, element* list) {
@@ -206,6 +209,55 @@ int mul_by_two(int a) {return 2 * a;}
 
 int abs(int a) {return a < 0? -a: a;}
 
+bool save(element* list, const char* filename) {
+  FILE* file = fopen(filename, "w+");
+  if (file == NULL) {return false;}
+  while (list->prev != NULL) 
+    list = list->prev;
+  while (list != NULL) {
+    fprintf(file, "%d ", list->value);
+    list = list->next;
+  }
+  fclose(file);
+  return true;
+}
+
+bool serialize(element* list, const char* filename) {
+  FILE *file = fopen(filename, "w+");
+  int i = 0;
+  if (file == NULL)
+    return false;
+  size_t list_size = list_length(list);
+  int* buffer = (int*)malloc(list_size * sizeof(int));
+  while (list->prev != NULL) 
+    list = list->prev;
+  while (list != NULL) {
+    buffer[i] = list->value;
+    list = list->next;
+    i++;
+  }
+  fwrite(buffer, list_size, sizeof(int), file);
+  fclose(file);
+  return true;
+}
+
+bool deserialize(element** list, const char* filename) {
+  FILE *file = fopen(filename, "r");
+  if (file == NULL)
+    return false;
+  fseek(file, 0, SEEK_END);
+  long filesize = ftell(file);
+  rewind(file);
+  int i = 0;
+  int* buffer = (int*)malloc(filesize);
+  fread(buffer, filesize/sizeof(int), sizeof(int), file);
+  for (i = 0; i < filesize / sizeof(int); i++){
+    list_add_back(buffer[i], list);
+  }
+  fclose(file);
+  return true;
+}
+
 int main(int argc, char *argv[]) {
   // Checking flags section
   int flags = 0, opt = 0;
@@ -224,7 +276,7 @@ int main(int argc, char *argv[]) {
   // List init section
   element* list = NULL;
   if (flags & FLAG_FILE) {
-    load_from_file(&list, file);
+    load(&list, file);
     printf("Succesfully loaded from %s\n", file);
   }
   else
@@ -266,6 +318,14 @@ int main(int argc, char *argv[]) {
   foreach(list, *print_with_space);
   printf("\n\nThe list of the first 10 powers of two using iterate\n");
   foreach(iterate(1, 10, *mul_by_two), *print_with_space);
+  printf("\nLets save our list to the output.txt\n");
+  save(list, "output.txt");
+  printf("\nLets serialize our list to serialized.txt\n");
+  serialize(list, "serialized.txt");
+  printf("\nLets deserialize our list\n");
+  list_free(&list);
+  deserialize(&list, "serialized.txt");
+  foreach(list, *print_with_space);
   printf("\nClear list...\n");
   list_free(&list);
   print_list(list);
