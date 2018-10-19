@@ -192,6 +192,18 @@ void map_mut(element* list, int (*fun) (int)) {
   }
 }
 
+element* iterate(int first, int amount, int (*fun)(int)) {
+  int acc = first;
+  element* new_list = NULL;
+  for (int i = first; i < (first + amount); i++) {
+    list_add_back(acc, &new_list);
+    acc = fun(acc);
+  }
+  return new_list;
+}
+
+int mul_by_two(int a) {return 2 * a;}
+
 int abs(int a) {return a < 0? -a: a;}
 
 int main(int argc, char *argv[]) {
@@ -252,6 +264,8 @@ int main(int argc, char *argv[]) {
   printf("\n\nLets abs every element using map_mut\n");
   map_mut(list, *abs);
   foreach(list, *print_with_space);
+  printf("\n\nThe list of the first 10 powers of two using iterate\n");
+  foreach(iterate(1, 10, *mul_by_two), *print_with_space);
   printf("\nClear list...\n");
   list_free(&list);
   print_list(list);
