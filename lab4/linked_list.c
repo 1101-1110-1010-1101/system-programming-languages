@@ -77,12 +77,21 @@ void print_list(element* list) {
 int list_length(element* list) {
   int i = 0;
   element* old_list = list;
-  while (list->prev != NULL) {
+  while (list != NULL) {
     i++;
     list = list->prev;
   }
   list = old_list;
   return i;
+}
+
+int list_sum(element* list) {
+  int sum = 0;
+  while (list != NULL) {
+    sum += list->value;
+    list = list->prev;
+  }
+  return sum;
 }
 
 void from_stdin(element** list) {
@@ -119,12 +128,18 @@ int main(int argc, char *argv[]) {
   }
 
   element* list = NULL;
-  if (flags & FLAG_FILE)
+  if (flags & FLAG_FILE) {
     load_from_file(&list, file);
+    printf("Succesfully loaded from %s\n", file);
+  }
   else
     from_stdin(&list);
-
+  printf("\nList info:\n");
   printf("list_length = %d\n", list_length(list));
+  printf("list_sum = %d\n", list_sum(list));
+  printf("contents: ");
+  print_list(list);
+  printf("\n");
   list_add_back(19, &list);
   list_add_front(29, &list);
   printf("list_length = %d\n", list_length(list));
