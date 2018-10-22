@@ -1,0 +1,72 @@
+\documentclass[12pt, a4paper]{article}
+\usepackage[a4paper, includeheadfoot, mag=1000, left=2cm, right=1.5cm, top=1.5cm, bottom=1.5cm, headsep=0.8cm, footskip=0.8cm]{geometry}
+% Fonts
+\usepackage{fontspec, unicode-math}
+\setmainfont[Ligatures=TeX]{CMU Serif}
+\setmonofont{CMU Typewriter Text}
+\usepackage[english, russian]{babel}
+% Indent first paragraph
+\usepackage{indentfirst}
+\setlength{\parskip}{5pt}
+% Page headings
+\usepackage{fancyhdr}
+% Diagrams
+\usepackage{graphicx}
+% Code listing
+\usepackage{listings}
+\pagestyle{fancy}
+\renewcommand{\headrulewidth}{0pt}
+\setlength{\headheight}{16pt}
+\newfontfamily\namefont[Scale=1.2]{Gloria Hallelujah}
+\fancyhead{}
+% Use case template
+
+\begin{document}
+
+% Title page
+\include{spectitlepage}
+
+\section*{Assignment}
+\subsection*{Linked list}
+The program accepts an arbitrary number of integers through stdin or input file. What you have to do is
+\begin{enumerate}
+  \item Save them all in a linked list in reverse order.
+  \item Write a function to compute the sum of elements in a linked list.
+  \item Use this function to compute the sum of elements in the saved list.
+  \item Write a function to output the n-th element of the list. If the list is too  short, signal about it.
+  \item Free the memory allocated for the linked list.
+\end{enumerate}
+
+\subsection*{Higher-Order Functions}
+In this assignment, we are going to implement several higher-order functions on linked lists, which should 
+be familiar to those used to functional programming paradigm.
+
+These functions are known under the names \texttt{foreach map map\_mut foldl}
+\begin{enumerate}
+  \item Save these integers in a linked list.
+  \item Transfer all functions written in previous assignment into separate.h and c files. Do not forget to
+  put an include guard!
+  \item Implement \texttt{foreach;} using it, output the initial list to stdout twice: the first time, separate elements
+  with spaces, the second time output each element on the new line.
+  \item Implement \texttt{map;} using it, output the squares and the cubes of the numbers from list.
+  \item Implement \texttt{foldl;} using it, output the sum and the minimal and maximal element in the list.
+  \item Implement \texttt{map\_mut;} using it, output the modules of the input numbers.
+  \item Implement \texttt{iterate;} using it, create and output the list of the powers of two.
+  \item Implement a function bool \texttt{save(struct list* lst, const char* filename);}, which will write all elements of the list into a text file filename. It should return \texttt{true} in case the write is successful, \texttt{false} otherwise.
+  \item Implement a function \texttt{bool load(struct list** lst, const char* filename);}, which will read all integers from a text file filename and write the saved list into *lst. It should return \texttt{true} in case the write is successful, \texttt{false} otherwise.
+  \item Save the list into a text file and load it back using the two functions above. Verify that the save and load are correct.
+  \item Implement a function bool \texttt{serialize(struct list* lst, const char* filename);}, which will write all elements of the list into a binary file filename. It should return \texttt{true} in case the write is successful, \texttt{false} otherwise.
+  \item Implement a function \texttt{bool deserialize(struct list** lst, const char* filename);}, which will read all integers from a binary file filename and write the saved list into *lst. It should return \texttt{true} in case the write is successful, \texttt{false} otherwise.
+  \item Serialize the list into a binary file and load it back using two functions above. Verify that the serialization and deserialization are correct.
+  \item Free all allocated memory.
+\end{enumerate}
+
+\section*{Code listing}
+Code listing is available in
+
+https://github.com/johnny-keker/system-programming-languages/tree/master/lab4
+
+\section*{Conclusion}
+While compliting the assignment I wrote simple realization of linked list in C language and implemented some higher-order functions, such as
+\texttt{foreach map map\_mut foldl}
+\end{document}

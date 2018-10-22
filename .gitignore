@@ -16,3 +16,5 @@
 !lab4
 !lab4/*.c
 !lab4/*.h
+!lab4/report/
+!lab4/report/*.tex
