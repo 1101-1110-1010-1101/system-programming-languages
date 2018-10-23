@@ -2,6 +2,7 @@
 #include <getopt.h>
 #include <limits.h>
 #include <stdbool.h>
+#include <time.h>
 #include "linked_list.h"
 #define FLAG_FILE 1
 

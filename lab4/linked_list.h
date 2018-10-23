@@ -19,6 +19,8 @@ void list_add_back(int el, element** list);
 
 void list_add_front(int el, element** list);
 
+void list_add_by_index(int el, element** list, int index);
+
 void list_free(element** list);
 
 void print_list(element* list);

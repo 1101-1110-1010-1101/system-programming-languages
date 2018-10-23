@@ -48,6 +48,14 @@ void list_add_front(int el, element** list) {
   *list = old_list; 
 }
 
+void list_add_by_index(int el, element** list, int index) {
+  element* new_el = (element*)malloc(sizeof(element));
+  element* old_at_index = list_node_at(index, *list);
+  new_el->next = old_at_index->next;
+  new_el->prev = old_at_index;
+  old_at_index->next = new_el;
+}
+
 void list_free(element** list) {
   element* temp_list = NULL;
   while ((*list)->prev != NULL) {
@@ -95,8 +103,13 @@ int list_sum(element* list) {
 void from_stdin(element** list) {
   printf("Введите элементы списка:\n");
   int j = 0;
-  while (scanf("%d", &j) != EOF)
-    list_add_back(j, list);
+  int el;
+  while ((el = scanf("%d", &j)) != EOF) {
+    if (el != 1)
+      printf("Cant interpret as int: %c\n", getchar());
+    else
+      list_add_back(j, list);
+  }
 }
 
 bool load(element** list, char* file) {
