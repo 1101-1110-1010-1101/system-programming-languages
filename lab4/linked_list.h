@@ -23,6 +23,8 @@ void list_add_by_index(int el, element** list, int index);
 
 void delete_back(element** list);
 
+void delete_front(element** list);
+
 void list_free(element** list);
 
 void print_list(element* list);

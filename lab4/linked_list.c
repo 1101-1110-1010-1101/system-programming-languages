@@ -63,6 +63,16 @@ void delete_back(element** list) {
   *list = new_last;
 }
 
+void delete_front(element** list) {
+  element *tmp = *list;
+  while (tmp->prev != NULL) {
+    tmp = tmp->prev;
+  }
+  tmp = tmp->next;
+  free(tmp->prev);
+  tmp->prev = NULL;
+}
+
 void list_free(element** list) {
   element* temp_list = NULL;
   while ((*list)->prev != NULL) {
