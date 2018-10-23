@@ -27,7 +27,7 @@ int main(int argc, char *argv[]) {
     clock_t add_middle_1000_begin = clock();
     list_add_by_index(20, &list1000, 500);
     clock_t add_middle_1000_end = clock();
-    printf("list_add_middle_1000: %lu us\n", (add_middle_1000_end - add_middle_1000_begin)e);
+    printf("list_add_middle_1000: %lu us\n", (add_middle_1000_end - add_middle_1000_begin));
 
     clock_t add_front_1000_begin = clock();
     list_add_front(20, &list1000);
@@ -47,13 +47,11 @@ int main(int argc, char *argv[]) {
     clock_t add_back_50_begin = clock();
     list_add_back(20, &list50);
     clock_t add_back_50_end = clock();
-    double add_back_50_time = (double) ;
     printf("list_add_back_50: %lu us\n", (add_back_50_end - add_back_50_begin));
 
     clock_t add_middle_50_begin = clock();
     list_add_by_index(20, &list50, 25);
     clock_t add_middle_50_end = clock();
-    double add_middle_50_time = (double) (add_middle_50_end - add_middle_50_begin);
     printf("list_add_middle_50: %lu us\n", (add_middle_50_end - add_middle_50_begin));
 
     clock_t add_front_50_begin = clock();
