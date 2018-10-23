@@ -56,6 +56,13 @@ void list_add_by_index(int el, element** list, int index) {
   old_at_index->next = new_el;
 }
 
+void delete_back(element** list) {
+  element* new_last = (*list)->prev;
+  new_last->next = NULL;
+  free(*list);
+  *list = new_last;
+}
+
 void list_free(element** list) {
   element* temp_list = NULL;
   while ((*list)->prev != NULL) {
