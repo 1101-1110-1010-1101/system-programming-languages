@@ -30,5 +30,6 @@ typedef struct {
 } image;
 
 image* rotate(image* img);
+void save_image(image* new_img, const char* filename, bmp_header header);
 
 #endif
