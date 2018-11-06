@@ -4,20 +4,11 @@
 #include "img.h"
  
 int main() {
-    bmp_header header;
-    FILE *f = fopen("elfen_lied.bmp", "rb");
-    fread(&header, 1, sizeof(header), f);
-    
-    pixel* data = (pixel*) malloc(header.biSizeImage);
-    fseek(f, header.bOffBits, SEEK_SET);
-    fread(data, 1, header.biSize, f);
-    
-    image img = {header.biWidth, header.biHeight, data};
+    image* input = (image*)malloc(sizeof(image));
+    load_image("elfen_lied.bmp", input);
 
-    image* new_img = rotate(&img);
-    save_image(new_img, "abc", header); 
-
-    fclose(f);
+    image* new_img = input;//rotate(input);
+    save_image(new_img, "abc.bmp"); 
 
     return 0;
 }
