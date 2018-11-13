@@ -2,22 +2,22 @@
 #define IMG
 
 #include <stdint.h>
-typedef struct __attribute__((packed)){                                         
-  uint16_t bfType;                                                        
-  uint32_t  bfileSize;                                                    
-  uint32_t bfReserved;                                                          
-  uint32_t bOffBits;                                                      
-  uint32_t biSize;                                                        
-  uint32_t biWidth;                                                       
-  uint32_t  biHeight;                                                     
-  uint16_t  biPlanes;                                                     
-  uint16_t biBitCount;                                                    
-  uint32_t biCompression;                                                 
-  uint32_t biSizeImage;                                                   
-  uint32_t biXPelsPerMeter;                                               
-  uint32_t biYPelsPerMeter;                                               
-  uint32_t biClrUsed;                                                     
-  uint32_t  biClrImportant;                                               
+typedef struct __attribute__((packed)){
+  uint16_t file_type;
+  uint32_t file_size;
+  uint32_t reserved_zero;
+  uint32_t img_data_offset;
+  uint32_t header_size;
+  uint32_t width;
+  uint32_t height;
+  uint16_t planes;
+  uint16_t bits_per_pixel;
+  uint32_t compression;
+  uint32_t img_size;
+  uint32_t pix_per_meter_hor;
+  uint32_t pix_per_meter_ver;
+  uint32_t number_of_colors;
+  uint32_t number_of_important_colors;
 } bmp_header;                                                                   
                                                                                 
 typedef struct {                                                                
@@ -29,7 +29,5 @@ typedef struct {
   pixel* data;
 } image;
 
-image* rotate(image* img);
-void save_image(const image new_img, const char* filename);
-void load_image(const char* filename, image* img);
+bmp_header* read_bmp_header(FILE* file); 
 #endif
