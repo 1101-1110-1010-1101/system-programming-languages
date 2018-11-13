@@ -29,5 +29,6 @@ typedef struct {
   pixel* data;
 } image;
 
-bmp_header* read_bmp_header(FILE* file); 
+bmp_header* read_bmp_header(FILE* file);
+void read_bmp_data(FILE* file, image* img);
 #endif
