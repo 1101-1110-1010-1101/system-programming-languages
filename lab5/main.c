@@ -7,8 +7,8 @@ int main() {
     image* input = (image*)malloc(sizeof(image));
     load_image("elfen_lied.bmp", input);
 
-    image* new_img = input;//rotate(input);
-    save_image(new_img, "abc.bmp"); 
+    image* new_img = rotate(input);
+    save_image(*new_img, "abc.bmp"); 
 
     return 0;
 }

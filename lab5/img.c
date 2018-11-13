@@ -17,18 +17,17 @@ image* rotate(image* img) {
   return rotated;
 }
 
-void save_image(image* img, const char* filename) {
-  FILE* new_f = fopen(filename, "wb+");                                                                                                         
-  int padding = img->width % 4;                                                
-  uint32_t i, j;                                                              
-
-  uint64_t size_of_data = img->width * img->height * sizeof(pixel) + img->height * padding;
+void save_image(const image img, const char* filename) {
+  FILE* new_f = fopen(filename, "wb");                                                                                                         
+  int padding = img.width % 4;                                                
+  if (padding == 4) padding = 0;
+  uint64_t size_of_data = img.width * img.height * sizeof(pixel) + img.height * padding;
   uint8_t* data = (uint8_t*)calloc(1, size_of_data);
-  for (uint64_t i = 0; i < img->height; i++) {
-    uint64_t pad = i * padding;
-    for (uint64_t j = 0; j < img->width; j++) {
-      uint64_t k = i * img->width + j;
-      *((pixel*)(data + sizeof(pixel) * k + pad)) = img->data[k];
+  for (uint64_t i = 0; i < img.height; i++) {
+    uint64_t pad = i * (img.width % 4);
+    for (uint64_t j = 0; j < img.width; j++) {
+      uint64_t k = i * img.width + j;
+      *((pixel*)(data + sizeof(pixel) * k + pad)) = img.data[k];
     }
   }
 
@@ -46,11 +45,11 @@ void save_image(image* img, const char* filename) {
   header->biYPelsPerMeter = 2835;
   header->biClrUsed = 0;
   header->biClrImportant = 0;
-  header->biWidth = img->width;
-  header->biHeight = img->height;                                  
+  header->biWidth = img.width;
+  header->biHeight = img.height;                                  
 
-  fwrite(header, 1, sizeof(bmp_header), new_f);   
-  fwrite(img->data, 1, size_of_data, new_f);
+  fwrite(header, sizeof(bmp_header), 1, new_f);   
+  fwrite(img.data, size_of_data, 1, new_f);
   fclose(new_f);
 } 
 
@@ -63,11 +62,11 @@ void load_image(const char* filename, image* img) {
   fread(data, 1, header.biSizeImage, f);
   img->data = (pixel*)malloc(header.biHeight * header.biWidth * sizeof(pixel));
 
-  int padding = header.biWidth % 4;
-  uint32_t i, j;
-  for(i = 0; i < header.biHeight; ++i) {
-    for(j = 0; j < header.biWidth; ++j) {
-      img->data[i * header.biWidth + j] = *(pixel*)(((uint8_t*)data) + sizeof(pixel) * (i * header.biWidth + j) + padding * i);
+  uint64_t padding = 4 - (header.biWidth * sizeof(pixel)) % 4;
+  if (padding == 4) padding = 0;
+  for (uint64_t i = 0; i < header.biHeight; ++i) {
+    for (uint64_t j = 0; j < header.biWidth; ++j) {
+      img->data[i * header.biWidth + j] = *(pixel*) (data + sizeof(pixel) * (i * header.biWidth + j) + padding * i);
     }
   }
   img->height = header.biHeight;
