@@ -62,3 +62,28 @@ bmp_header* create_bmp_header(image* img) {
 
   return header;
 }
+
+void write_bmp(image* img, FILE* file) {
+  bmp_header* header = create_bmp_header(img);
+  fwrite(header, sizeof(bmp_header), 1, file);
+
+  uint64_t pad = img->width % 4;
+  if (pad == 0) {
+    fwrite(img->data, img->width * img->height * sizeof(pixel), 1, file);
+  }
+  else {
+    uint64_t data_size = img->width * img->height * sizeof(pixel) + img->height * pad;
+    uint8_t* data = (uint8_t*)calloc(1, data_size);
+    uint64_t h, w, cur_pad, cur_pix;
+    for (h = 0; h < img->height; h++) {
+      cur_pad = h * pad;
+      for (w = 0; w < img->width; w++) {
+        cur_pix = h * img->width + w;
+        *((pixel*) (data + sizeof(pixel) * cur_pix + cur_pad)) = img->data[cur_pix];
+      }
+    }
+    fwrite(data, data_size, 1, file);
+    free(data);
+  }
+  fflush(file); 
+}

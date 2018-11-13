@@ -12,5 +12,9 @@ image* rotate_image(image* img) {
         img->data[(h * img->width) + w];
     }
   }
-  return &(image) { .width = img->height, .height = img->width, .data = rotated };
+  image* res = (image*) malloc(sizeof(image));
+  res->width = img->height;
+  res->height = img->width;
+  res->data = rotated;
+  return res;
 }

@@ -32,4 +32,6 @@ typedef struct {
 bmp_header* read_bmp_header(FILE* file);
 void read_bmp_data(FILE* file, image* img);
 bmp_header* create_bmp_header(image* img);
+void write_bmp(image* img, FILE* file);
+
 #endif

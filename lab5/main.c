@@ -5,13 +5,14 @@
 #include "bmp_tools.h"
  
 int main() {
-  //FILE* input = fopen("elfen_lied.bmp", "rb");
-  //bmp_header* header = read_bmp_header(input);
-    //image* input = (image*)malloc(sizeof(image));
-    //load_image("elfen_lied.bmp", input);
+  FILE* input = fopen("elfen_lied.bmp", "rb");
+  FILE* output = fopen("result.bmp", "wb");
+  image* img = (image*) malloc(sizeof(image));
+  read_bmp_data(input, img);
+  image* rot = rotate_image(img);
+  write_bmp(rot, output);
+  fclose(input);
+  fclose(output);
 
-    //image* new_img = rotate(input);
-    //save_image(*new_img, "abc.bmp"); 
-
-    return 0;
+  return 0;
 }
