@@ -1,5 +1,5 @@
-#ifndef IMG
-#define IMG
+#ifndef BMP
+#define BMP
 
 #include <stdint.h>
 typedef struct __attribute__((packed)){

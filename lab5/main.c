@@ -1,7 +1,8 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include "img.h"
+#include "rotation_tools.h"
+#include "bmp_tools.h"
  
 int main() {
   //FILE* input = fopen("elfen_lied.bmp", "rb");

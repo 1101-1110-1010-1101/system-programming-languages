@@ -1,6 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
-#include "img.h"
+#include "bmp_tools.h"
 
 bmp_header* read_bmp_header(FILE* file) {
   bmp_header* header = (bmp_header*)malloc(sizeof(bmp_header));
