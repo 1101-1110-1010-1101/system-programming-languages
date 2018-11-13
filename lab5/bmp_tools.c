@@ -38,3 +38,27 @@ void read_bmp_data(FILE* file, image* img) {
   img->width = header->width;
   img->height = header->height;
 }
+
+bmp_header* create_bmp_header(image* img) {
+  bmp_header* header = (bmp_header*)malloc(sizeof(bmp_header));
+
+  header->file_type[0] = 'B';
+  header->file_type[1] = 'M';
+  header->reserved_zero = 0;
+  header->img_data_offset = sizeof(bmp_header);
+  header->header_size = header->img_data_offset - 14;
+  header->width = img->width;
+  header->height = img->height;
+  header->planes = 1;
+  header->bits_per_pixel = 24;
+  header->compression = 0;
+  header->img_size = img->height * img->width * sizeof(pixel) 
+    + img->height * (img->width % 4);
+  header->pix_per_meter_hor = 2835;
+  header->pix_per_meter_ver = 2835;
+  header->number_of_colors = 0;
+  header->number_of_important_colors = 0;
+  header->file_size = header->img_data_offset + header->img_size;
+
+  return header;
+}

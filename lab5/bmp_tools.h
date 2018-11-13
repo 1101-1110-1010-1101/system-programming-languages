@@ -3,7 +3,7 @@
 
 #include <stdint.h>
 typedef struct __attribute__((packed)){
-  uint16_t file_type;
+  char file_type[2];
   uint32_t file_size;
   uint32_t reserved_zero;
   uint32_t img_data_offset;
@@ -31,4 +31,5 @@ typedef struct {
 
 bmp_header* read_bmp_header(FILE* file);
 void read_bmp_data(FILE* file, image* img);
+bmp_header* create_bmp_header(image* img);
 #endif
