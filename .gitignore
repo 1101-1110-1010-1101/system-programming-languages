@@ -18,6 +18,9 @@
 !lab4/*.h
 !lab4/report/
 !lab4/report/*.tex
-!lab5
+!lab5/
 !lab5/*.c
 !lab5/*.h
+!lab6/
+!lab6/*.c
+!lab6/*.h
