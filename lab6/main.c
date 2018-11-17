@@ -18,7 +18,9 @@ struct __attribute__((packed)) block_header {
 };
 
 block_header* init() {
-  start = mmap(NULL, INIT_BLOCK_SIZE, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS, 0, 0);
+  start = mmap(start, INIT_BLOCK_SIZE, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS | MAP_FIXED, 0, 0);
+  if (start == MAP_FAILED)
+    start = mmap(NULL, INIT_BLOCK_SIZE, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS, 0, 0);
   block_header* header = (block_header*)start;
   header->next = NULL;
   header->capacity = INIT_BLOCK_SIZE;
@@ -50,7 +52,7 @@ void* customalloc(size_t query) {
 }
 
 int main() {
-  block_header* header = init();
+  start = mmap(NULL, INIT_BLOCK_SIZE, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS, 0, 0);
   void* smth = customalloc(4000);
   void* smth_else = customalloc(1000);
   return 0;

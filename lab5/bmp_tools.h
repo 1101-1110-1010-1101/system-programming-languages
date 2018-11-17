@@ -1,6 +1,18 @@
 #ifndef BMP
 #define BMP
 
+typedef enum {
+  READ_OK = 0,
+  READ_ERR_SIGNATURE,
+  READ_ERR_BITS_PER_PIXEL,
+  READ_ERR
+} read_status;
+
+typedef enum {
+  WRITE_OK = 0,
+  WRITE_ERR
+} write_status;
+
 #include <stdint.h>
 typedef struct __attribute__((packed)){
   char file_type[2];
@@ -30,8 +42,8 @@ typedef struct {
 } image;
 
 bmp_header* read_bmp_header(FILE* file);
-void read_bmp_data(FILE* file, image* img);
+read_status read_bmp_data(FILE* file, image* img);
 bmp_header* create_bmp_header(image* img);
-void write_bmp(image* img, FILE* file);
+write_status write_bmp(image* img, FILE* file);
 
 #endif

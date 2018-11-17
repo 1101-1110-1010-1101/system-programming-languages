@@ -8,12 +8,17 @@ bmp_header* read_bmp_header(FILE* file) {
   return header;
 }
 
-void read_bmp_data(FILE* file, image* img) {
+read_status read_bmp_data(FILE* file, image* img) {
   /* load raw (padded) data from source image */
   bmp_header* header = read_bmp_header(file);
+  if (header->bits_per_pixel != 24)
+    return READ_ERR_BITS_PER_PIXEL;
+  if (header->file_type[0] != 'B' || header->file_type[1] != 'M')
+    return READ_ERR_SIGNATURE;
   uint8_t* raw = (uint8_t*)malloc(header->img_size);
   fseek(file, header->img_data_offset, SEEK_SET);
-  fread(raw, header->img_size, 1, file);
+  if (fread(raw, header->img_size, 1, file) != 1)
+    return READ_ERR;
 
   /* now its time to remove some padding folks */
   uint32_t pad = header->width % 4;    // this is padding - how many bytes we should add for each line
@@ -37,6 +42,7 @@ void read_bmp_data(FILE* file, image* img) {
   }
   img->width = header->width;
   img->height = header->height;
+  return READ_OK;
 }
 
 bmp_header* create_bmp_header(image* img) {
@@ -63,13 +69,17 @@ bmp_header* create_bmp_header(image* img) {
   return header;
 }
 
-void write_bmp(image* img, FILE* file) {
+write_status write_bmp(image* img, FILE* file) {
   bmp_header* header = create_bmp_header(img);
-  fwrite(header, sizeof(bmp_header), 1, file);
+  if (fwrite(header, sizeof(bmp_header), 1, file) != 1)
+    return WRITE_ERR;
+  
+  uint64_t num_bytes = img->width * img->height * sizeof(pixel);
 
   uint64_t pad = img->width % 4;
   if (pad == 0) {
-    fwrite(img->data, img->width * img->height * sizeof(pixel), 1, file);
+    if (fwrite(img->data, num_bytes, 1, file) != num_bytes)
+      return WRITE_ERR;
   }
   else {
     uint64_t data_size = img->width * img->height * sizeof(pixel) + img->height * pad;
@@ -85,5 +95,6 @@ void write_bmp(image* img, FILE* file) {
     fwrite(data, data_size, 1, file);
     free(data);
   }
-  fflush(file); 
+  fflush(file);
+  return WRITE_OK;
 }
