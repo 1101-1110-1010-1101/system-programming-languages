@@ -78,7 +78,7 @@ write_status write_bmp(image* img, FILE* file) {
 
   uint64_t pad = img->width % 4;
   if (pad == 0) {
-    if (fwrite(img->data, num_bytes, 1, file) != num_bytes)
+    if (fwrite(img->data, num_bytes, 1, file) != 1)
       return WRITE_ERR;
   }
   else {
