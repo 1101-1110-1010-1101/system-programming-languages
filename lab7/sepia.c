@@ -7,7 +7,7 @@ static unsigned char sat( uint64_t x) {
     return 255;
 }
 
-static void sepia_one( pixel_t* pixel ) {
+void sepia_one( pixel_t* pixel ) {
   static const float c[3][3] =  {
   { .393f, .769f, .189f },
   { .349f, .686f, .168f },
@@ -26,6 +26,8 @@ pixel->b = sat(
 void sepia_c_inplace( image_t* img ) {
     uint32_t h, w;
     for( h = 0; h < img->height; ++h )
-        for( w = 0; w < img->width; ++w )
-            sepia_one( img->data + h * img->width + w  );
+        for( w = 0; w < img->width; ++w ) {
+            pixel_t* p =  img->data + h * img->width + w;
+            sepia_one(p);
+        }
 }
