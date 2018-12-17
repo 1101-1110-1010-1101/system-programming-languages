@@ -70,8 +70,9 @@ int main(int argc, char** argv) {
   FILE* output_sse = fopen("out/result_sse.bmp", "wb");
   image_t* img = (image_t*) malloc(sizeof(image_t));
   read_status r_st = read_bmp_data(input, img);
-
-  calculate_time(img);
+  image_t* img_calc = (image_t*)malloc(sizeof(image_t));
+  r_st = read_bmp_data(input, img_calc);
+  calculate_time(img_calc);
 
   switch (r_st) {
     case READ_ERR_SIGNATURE:
@@ -84,7 +85,8 @@ int main(int argc, char** argv) {
       break;
   }
   
-  image_t* img_c = img;
+  image_t* img_c = (image_t*)malloc(sizeof(image_t));
+  r_st = read_bmp_data(input, img_c);
   sepia_c_inplace(img_c);
   write_bmp(img_c, output_c);
 

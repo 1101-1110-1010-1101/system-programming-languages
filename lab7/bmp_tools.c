@@ -42,6 +42,7 @@ read_status read_bmp_data(FILE* file, image_t* img) {
   }
   img->width = header->width;
   img->height = header->height;
+  fseek(file, 0, SEEK_SET);
   return READ_OK;
 }
 
