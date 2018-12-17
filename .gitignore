@@ -24,3 +24,8 @@
 !lab6/
 !lab6/*.c
 !lab6/*.h
+lab7/
+!lab7/*.c
+!lab7/*.s
+!lab7/*.h
+!*/Makefile
